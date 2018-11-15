@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use app\models\EntryForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -142,6 +143,35 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+
+    /**
+     * 展示hello页面
+     * 必须要加.html后缀
+     * @url http://abc.com/learn/yii/yiiblog/frontend/web/index.php/site/hello.html
+     * @return string
+     */
+    public function actionHello($message='llqhz')
+    {
+
+        return $this->render('hello',['message'=>$message]);
+    }
+
+
+    public function actionEntry()
+    {
+        $model = new EntryForm();
+
+        if ( $model->load(Yii::$app->request->post()) && $model->validate() ) {
+            // 数据加载并验证成功
+
+            return $this->render('entry-form',['model'=>$model]);
+        } else {
+            // 无论是初始化显示还是数据验证错误
+            return $this->render('entry',['model'=>$model]);
+        }
+    }
+
 
     /**
      * Signs user up.
